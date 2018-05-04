@@ -1,0 +1,71 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: helvetica, arial, sans-serif;
+  margin: 0;
+  background: black;
+  color: white;
+}
+
+h1 {
+  font-weight: bold;
+  color: white;
+  text-align: center;
+}
+
+input {
+  display: block;
+  margin-bottom: 10px;
+  padding: 1vh 0;
+  width: 50vw;
+  text-align: center;
+  border: none;
+  border-radius: 3px;
+  font-size: 16px;
+  outline: none !important;
+}
+
+button {
+  font-size: 16px;
+  border-radius: 3px;
+  background-color: #fff;
+  border: none;
+  outline: none !important;
+  cursor: pointer;
+  padding: 1vh 0;
+  width: 50vw;
+}
+
+@media only screen and (orientation: portrait) {
+  input {
+    width: 80vw;
+  }
+  button {
+    width: 80vw;
+  }
+}
+
+button:hover {
+  background-color: #eee;
+}
+
+button:active {
+  background-color: #ddd;
+}
+
+#join {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#game {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: none;
+}

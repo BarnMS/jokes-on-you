@@ -1,0 +1,175 @@
+<!-- This is a static file -->
+<!-- served from your routes in server.js -->
+
+<!-- You might want to try something fancier: -->
+<!-- html/nunjucks docs: https://mozilla.github.io/nunjucks/ -->
+<!-- pug: https://pugjs.org/ -->
+<!-- haml: http://haml.info/ -->
+<!-- hbs(handlebars): http://handlebarsjs.com/ -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Jokes On You</title>
+    <meta name="description" content="The Jokes On You">
+    <!-- <link id="favicon" rel="icon" href="https://glitch.com/edit/favicon-app.ico" type="image/x-icon"> -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/style.css">
+  </head>
+  <body>
+    <div id="join">
+      <header>
+        <h1>
+          Jokes On You
+        </h1>
+      </header>
+
+      <input id="code" autocomplete="off" class="alphanum caps" type="text" placeholder="Code" maxlength="4" size="4" pattern="[a-zA-Z0-9]+">
+      <input id="username" autocomplete="off" class="alphanumspaces" type="text" placeholder="Username" maxlength="16" size="16">
+
+      <button id="joinbtn" onclick="join()">
+        Join
+      </button>
+      <p id="joinerror" style="opacity: 0; transition: 0.5s opacity;">
+        Error! Make sure you entered the correct code.
+      </p>
+    </div>
+    <div id="game">
+      <p aria-live="polite">
+        You're in, how does it feel?
+      </p>
+    </div>
+
+    <!-- Your web-app is https, so your scripts need to be too -->
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="/client.js"></script>
+    <script type="text/javascript">
+      $(function ()
+       {
+         $('input.alphanum').keypress(function () {
+           setTimeout(() => {
+           if (this.value.match(/[^a-zA-Z0-9]/g)){
+             this.value = this.value.replace(/[^a-zA-Z0-9]/g, '');
+           }
+           }, 0);
+           setTimeout(() => {
+           if (this.value.match(/[^a-zA-Z0-9]/g)){
+             this.value = this.value.replace(/[^a-zA-Z0-9]/g, '');
+           }
+           }, 25);
+           setTimeout(() => {
+           if (this.value.match(/[^a-zA-Z0-9]/g)){
+             this.value = this.value.replace(/[^a-zA-Z0-9]/g, '');
+           }
+           }, 50);
+         });
+        $('input.alphanumspaces').keypress(function () {
+           setTimeout(() => {
+           if (this.value.match(/[^a-zA-Z0-9\s]/g)){
+             this.value = this.value.replace(/[^a-zA-Z0-9\s]/g, '');
+           }
+           }, 0);
+           setTimeout(() => {
+           if (this.value.match(/[^a-zA-Z0-9\s]/g)){
+             this.value = this.value.replace(/[^a-zA-Z0-9\s]/g, '');
+           }
+           }, 25);
+           setTimeout(() => {
+           if (this.value.match(/[^a-zA-Z0-9\s]/g)){
+             this.value = this.value.replace(/[^a-zA-Z0-9\s]/g, '');
+           }
+           }, 50);
+         });
+         $('input.caps').keypress(function () {
+           setTimeout(() => {
+           if (this.value.match(/[a-z]/g)) {
+             this.value = this.value.toUpperCase();
+           }
+           }, 0);
+           setTimeout(() => {
+           if (this.value.match(/[a-z]/g)) {
+             this.value = this.value.toUpperCase();
+           }
+           }, 25);
+           setTimeout(() => {
+           if (this.value.match(/[a-z]/g)) {
+             this.value = this.value.toUpperCase();
+           }
+           }, 50);
+         });
+       }
+       );
+    </script>
+    <script src="devtools-detect.js"></script>
+    <script>
+      setInterval(() => {
+        if(window.devtools.open) {
+          console.log("Please Do Not Use DevTools To Cheat In ANY Way Shape Or Form");
+        }
+      }, 1000);
+      
+      window.oncontextmenu = function () {
+         return false;
+      }
+      
+      document.onkeydown = function (e) { 
+          if (window.event.keyCode == 123 ||  e.button==2)    
+          return false;
+      }
+      
+      $("#code").focus();
+      
+      function join() {
+        $('#username').blur();
+        $('#code').blur();
+        if($('#code').val() == "" || $('#username').val() == "") {
+          $("#joinerror").html("Don't leave these inputs blank");
+          $("#joinerror").css({opacity: "1"});
+          setTimeout(function() {
+            $("#joinerror").css({opacity: "0"});
+          }, 2500);
+        } else {
+          $.get( "/joingame?code="+$('#code').val()+"&name="+$('#username').val(), function( data ) {
+            if(data == "game") {
+              var inquotes = ["You're in, how does it feel?","Welcome to the game.","Welcome to Jokes On You.","Humour is how you win, stay witty."];
+              $("#join").css({display: "none"});
+              $("#game").html(inquotes[Math.floor(Math.random() * 4)]);
+              $("#game").css({display: "block"});
+            }
+            if(data == "audience") {
+              var audiencequotes = ["You're in the audience. YAY!","Welcome to the audience.","Welcome to Jokes On You. You're in the adience this time.","Vote wisely, you're in the audience."];
+              $("#join").css({display: "none"});
+              $("#game").html(audiencequotes[Math.floor(Math.random() * 4)]);
+              $("#game").css({display: "block"});
+            }
+            if(data == "error") {
+              $("#joinerror").css({opacity: "1"});
+              $("#joinerror").html("Error! Make sure you entered the correct code");
+              setTimeout(() => {
+                $("#joinerror").css({opacity: "0"});
+              }, 2500);
+            }
+            if(data == "taken") {
+              $("#joinerror").css({opacity: "1"});
+              $("#joinerror").html("That name is taken");
+              setTimeout(() => {
+                $("#joinerror").css({opacity: "0"});
+              }, 2500);
+            }
+          });
+        }
+      }
+      
+      $('#code').keypress(function (e) {
+        if(window.event.keyCode == 13 ||  e.keyCode == 13)
+          $("#username").focus();
+      });
+      $('#username').keypress(function (e) {
+        if(window.event.keyCode == 13 ||  e.keyCode == 13)
+          $("#joinbtn").click();
+      });
+    </script>
+  </body>
+</html>
