@@ -98,6 +98,6 @@ function deleteGame(code, key) {
 const http = require('http');
 
 setInterval(() => {
-  http.get(`http://${process.env.PROJECT_DOMAIN}.glitch.me/`);
+  http.get(`http://jokes-on-you-game.herokuapp.com/`);
   console.log("...");
 }, 280000);
